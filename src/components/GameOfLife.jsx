@@ -28,18 +28,18 @@ const GameOfLife = ({ rows, columns }) => {
       return count;
     };
 
+    const shouldLive = (currentValue, liveNeighbors) => {
+      if (currentValue === 1) {
+        return liveNeighbors === 2 || liveNeighbors === 3;
+      }
+      return liveNeighbors === 3;
+    };
+
     const updateValue = (rowIndex, colIndex) => {
       const currentValue = currentGrid[rowIndex][colIndex];
       const liveNeighbors = countLiveNeighbors(rowIndex, colIndex);
 
-      if (currentValue === 1 && (liveNeighbors < 2 || liveNeighbors > 3)) {
-        return 0;
-      }
-      if (currentValue === 0 && liveNeighbors === 3) {
-        return 1;
-      }
-
-      return currentValue;
+      return shouldLive(currentValue, liveNeighbors) ? 1 : 0;
     };
 
     const nextGrid = currentGrid.map((row, rowIndex) =>
