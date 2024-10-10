@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Cell from "./Cell";
 import evolveGrid from "../utils/evolveGrid";
 
@@ -8,12 +8,29 @@ const GameOfLife = ({ rows, columns }) => {
   };
 
   const [currentGrid, setCurrentGrid] = useState(createEmptyGrid());
+  const [isPlaying, setIsPlaying] = useState(false);
 
-  const nextGeneration = () => {
+  const nextGeneration = useCallback(() => {
     const nextGrid = evolveGrid(currentGrid);
 
     setCurrentGrid(nextGrid);
+  }, [currentGrid]);
+
+  const togglePlay = () => {
+    setIsPlaying(!isPlaying);
   };
+
+  useEffect(() => {
+    const intervalId = setInterval(nextGeneration, 500);
+
+    if (!isPlaying) {
+      clearInterval(intervalId);
+    }
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [isPlaying, nextGeneration]);
 
   const toggleCell = (rowIndex, colIndex) => {
     const gridCopy = [...currentGrid];
@@ -23,10 +40,11 @@ const GameOfLife = ({ rows, columns }) => {
   };
 
   return (
-    <div>
-      <button onClick={nextGeneration} style={{ marginBottom: "30px" }}>
-        Next
-      </button>
+    <>
+      <div style={{ marginBottom: "30px" }}>
+        <button onClick={nextGeneration}>Next State</button>
+        <button onClick={togglePlay}>{isPlaying ? "Stop" : "Play"}</button>
+      </div>
       {createEmptyGrid().map((row, rowIndex) => (
         <div key={rowIndex} style={{ display: "flex" }}>
           {row.map((_, colIndex) => (
@@ -40,7 +58,7 @@ const GameOfLife = ({ rows, columns }) => {
           ))}
         </div>
       ))}
-    </div>
+    </>
   );
 };
 
