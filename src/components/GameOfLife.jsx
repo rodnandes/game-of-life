@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Cell from "./Cell";
+import evolveGrid from "../utils/evolveGrid";
 
 const GameOfLife = ({ rows, columns }) => {
   const createEmptyGrid = () => {
@@ -9,42 +10,7 @@ const GameOfLife = ({ rows, columns }) => {
   const [currentGrid, setCurrentGrid] = useState(createEmptyGrid());
 
   const nextGeneration = () => {
-    const countLiveNeighbors = (rowIndex, colIndex) => {
-      const neighbors = [
-        currentGrid[rowIndex - 1]?.[colIndex - 1],
-        currentGrid[rowIndex - 1]?.[colIndex],
-        currentGrid[rowIndex - 1]?.[colIndex + 1],
-        currentGrid[rowIndex]?.[colIndex - 1],
-        currentGrid[rowIndex]?.[colIndex + 1],
-        currentGrid[rowIndex + 1]?.[colIndex - 1],
-        currentGrid[rowIndex + 1]?.[colIndex],
-        currentGrid[rowIndex + 1]?.[colIndex + 1],
-      ];
-
-      const count = neighbors
-        .filter((neighbor) => neighbor === 1)
-        .reduce((acc, neighbor) => acc + neighbor, 0);
-
-      return count;
-    };
-
-    const shouldLive = (currentValue, liveNeighbors) => {
-      if (currentValue === 1) {
-        return liveNeighbors === 2 || liveNeighbors === 3;
-      }
-      return liveNeighbors === 3;
-    };
-
-    const updateValue = (rowIndex, colIndex) => {
-      const currentValue = currentGrid[rowIndex][colIndex];
-      const liveNeighbors = countLiveNeighbors(rowIndex, colIndex);
-
-      return shouldLive(currentValue, liveNeighbors) ? 1 : 0;
-    };
-
-    const nextGrid = currentGrid.map((row, rowIndex) =>
-      row.map((_cellValue, colIndex) => updateValue(rowIndex, colIndex))
-    );
+    const nextGrid = evolveGrid(currentGrid);
 
     setCurrentGrid(nextGrid);
   };
