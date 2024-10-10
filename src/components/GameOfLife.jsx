@@ -1,24 +1,24 @@
 import { useState } from "react";
+import Cell from "./Cell";
 
-const GameOfLife = () => {
-  const rows = 5;
-  const columns = 15;
+const GameOfLife = ({ rows, columns }) => {
+  const createEmptyGrid = () => {
+    return Array.from(Array(rows), () => new Array(columns).fill(0));
+  };
 
-  const [grid, setGrid] = useState(
-    Array.from(Array(rows), () => new Array(columns).fill(0))
-  );
+  const [currentGrid, setCurrentGrid] = useState(createEmptyGrid());
 
   const nextGeneration = () => {
     const countLiveNeighbors = (rowIndex, colIndex) => {
       const neighbors = [
-        grid[rowIndex - 1]?.[colIndex - 1],
-        grid[rowIndex - 1]?.[colIndex],
-        grid[rowIndex - 1]?.[colIndex + 1],
-        grid[rowIndex]?.[colIndex - 1],
-        grid[rowIndex]?.[colIndex + 1],
-        grid[rowIndex + 1]?.[colIndex - 1],
-        grid[rowIndex + 1]?.[colIndex],
-        grid[rowIndex + 1]?.[colIndex + 1],
+        currentGrid[rowIndex - 1]?.[colIndex - 1],
+        currentGrid[rowIndex - 1]?.[colIndex],
+        currentGrid[rowIndex - 1]?.[colIndex + 1],
+        currentGrid[rowIndex]?.[colIndex - 1],
+        currentGrid[rowIndex]?.[colIndex + 1],
+        currentGrid[rowIndex + 1]?.[colIndex - 1],
+        currentGrid[rowIndex + 1]?.[colIndex],
+        currentGrid[rowIndex + 1]?.[colIndex + 1],
       ];
 
       const count = neighbors
@@ -29,7 +29,7 @@ const GameOfLife = () => {
     };
 
     const updateValue = (rowIndex, colIndex) => {
-      const currentValue = grid[rowIndex][colIndex];
+      const currentValue = currentGrid[rowIndex][colIndex];
       const liveNeighbors = countLiveNeighbors(rowIndex, colIndex);
 
       if (currentValue === 1 && (liveNeighbors < 2 || liveNeighbors > 3)) {
@@ -42,18 +42,18 @@ const GameOfLife = () => {
       return currentValue;
     };
 
-    const nextGrid = grid.map((row, rowIndex) =>
+    const nextGrid = currentGrid.map((row, rowIndex) =>
       row.map((_cellValue, colIndex) => updateValue(rowIndex, colIndex))
     );
 
-    setGrid(nextGrid);
+    setCurrentGrid(nextGrid);
   };
 
   const toggleCell = (rowIndex, colIndex) => {
-    const gridCopy = [...grid];
+    const gridCopy = [...currentGrid];
     gridCopy[rowIndex][colIndex] = gridCopy[rowIndex][colIndex] === 1 ? 0 : 1;
 
-    setGrid(gridCopy);
+    setCurrentGrid(gridCopy);
   };
 
   return (
@@ -61,19 +61,15 @@ const GameOfLife = () => {
       <button onClick={nextGeneration} style={{ marginBottom: "30px" }}>
         Next
       </button>
-      {grid.map((row, rowIndex) => (
+      {createEmptyGrid().map((row, rowIndex) => (
         <div key={rowIndex} style={{ display: "flex" }}>
-          {row.map((cellValue, colIndex) => (
-            <div
-              key={colIndex}
-              onClick={() => toggleCell(rowIndex, colIndex)}
-              style={{
-                width: "40px",
-                height: "40px",
-                backgroundColor: cellValue === 1 ? "black" : "white",
-                border: "1px solid gray",
-                cursor: "pointer",
-              }}
+          {row.map((_, colIndex) => (
+            <Cell
+              key={`${rowIndex}-${colIndex}`}
+              rowIndex={rowIndex}
+              colIndex={colIndex}
+              cellValue={currentGrid[rowIndex][colIndex]}
+              toggleCell={toggleCell}
             />
           ))}
         </div>
