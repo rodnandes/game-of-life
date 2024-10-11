@@ -1,8 +1,39 @@
-# React + Vite
+# Conway's Game of Life
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A [React](https://react.dev/) implementation of [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life), the classic cellular automaton simulation.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Interactive grid (toggle cells on click)
+- Advancing to the next state
+- Advancing state to a given number of steps
+- Play Forever
+- Customizable grid size
+
+## Prerequisites
+
+- Node.js (v20.0.0 or later)
+- npm (v7.0.0 or later)
+
+## Quick Start
+
+1. Clone the repo:
+
+   ```
+   git clone https://github.com/rodnandes/game-of-life.git
+   ```
+
+2. Install dependencies:
+
+   ```
+   cd game-of-life
+   npm install
+   ```
+
+3. Run the app:
+
+   ```
+   npm run dev
+   ```
+
+4. Open the provided URL in your browser.
