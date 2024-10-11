@@ -8,7 +8,7 @@ function App() {
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
       <h1>Conway&apos;s Game of Life</h1>
-      <GameOfLife rows={4} columns={6} />
+      <GameOfLife rows={20} columns={40} />
     </div>
   );
 }
