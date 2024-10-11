@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 const Controls = ({
   nextGeneration,
   handleTogglePlay,
@@ -29,5 +31,14 @@ const Controls = ({
     </div>
   </>
 );
+
+Controls.propTypes = {
+  nextGeneration: PropTypes.func.isRequired,
+  handleTogglePlay: PropTypes.func.isRequired,
+  handleAdvanceSteps: PropTypes.func.isRequired,
+  isPlaying: PropTypes.bool.isRequired,
+  stepsToAdvance: PropTypes.number.isRequired,
+  setStepsToAdvance: PropTypes.func.isRequired,
+};
 
 export default Controls;

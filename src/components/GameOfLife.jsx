@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
+import PropTypes from "prop-types";
 import evolveGrid from "../utils/evolveGrid";
 import Grid from "./Grid";
 import Controls from "./Controls";
@@ -59,6 +60,11 @@ const GameOfLife = ({ rows, columns }) => {
       <p>Current step: {currentStep}</p>
     </>
   );
+};
+
+GameOfLife.propTypes = {
+  rows: PropTypes.number.isRequired,
+  columns: PropTypes.number.isRequired,
 };
 
 export default GameOfLife;

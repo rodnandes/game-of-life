@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 const Cell = ({ rowIndex, colIndex, cellValue, toggleCell }) => (
   <div
     onClick={() => toggleCell(rowIndex, colIndex)}
@@ -10,5 +12,12 @@ const Cell = ({ rowIndex, colIndex, cellValue, toggleCell }) => (
     }}
   />
 );
+
+Cell.propTypes = {
+  rowIndex: PropTypes.number.isRequired,
+  colIndex: PropTypes.number.isRequired,
+  cellValue: PropTypes.number.isRequired,
+  toggleCell: PropTypes.func.isRequired,
+};
 
 export default Cell;

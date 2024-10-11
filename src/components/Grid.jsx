@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import Cell from "./Cell";
 
 const Grid = ({ currentGrid, setCurrentGrid }) => {
@@ -25,6 +26,12 @@ const Grid = ({ currentGrid, setCurrentGrid }) => {
       ))}
     </div>
   );
+};
+
+Grid.propTypes = {
+  currentGrid: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number))
+    .isRequired,
+  setCurrentGrid: PropTypes.func.isRequired,
 };
 
 export default Grid;
