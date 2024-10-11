@@ -1,13 +1,11 @@
 import { useEffect, useState, useCallback } from "react";
-import Cell from "./Cell";
 import evolveGrid from "../utils/evolveGrid";
+import Grid from "./Grid";
 
 const GameOfLife = ({ rows, columns }) => {
-  const createEmptyGrid = () => {
-    return Array.from(Array(rows), () => new Array(columns).fill(0));
-  };
-
-  const [currentGrid, setCurrentGrid] = useState(createEmptyGrid());
+  const [currentGrid, setCurrentGrid] = useState(
+    Array.from(Array(rows), () => new Array(columns).fill(0))
+  );
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [stepsToAdvance, setStepsToAdvance] = useState(2);
@@ -41,13 +39,6 @@ const GameOfLife = ({ rows, columns }) => {
     };
   }, [currentStep, isPlaying, nextGeneration, stopAt]);
 
-  const toggleCell = (rowIndex, colIndex) => {
-    const gridCopy = [...currentGrid];
-    gridCopy[rowIndex][colIndex] = gridCopy[rowIndex][colIndex] === 1 ? 0 : 1;
-
-    setCurrentGrid(gridCopy);
-  };
-
   const handleAdvanceSteps = () => {
     setStopAt(currentStep + stepsToAdvance);
     setIsPlaying(true);
@@ -55,21 +46,7 @@ const GameOfLife = ({ rows, columns }) => {
 
   return (
     <>
-      <div style={{ margin: "20px" }}>
-        {createEmptyGrid().map((row, rowIndex) => (
-          <div key={rowIndex} style={{ display: "flex" }}>
-            {row.map((_, colIndex) => (
-              <Cell
-                key={`${rowIndex}-${colIndex}`}
-                rowIndex={rowIndex}
-                colIndex={colIndex}
-                cellValue={currentGrid[rowIndex][colIndex]}
-                toggleCell={toggleCell}
-              />
-            ))}
-          </div>
-        ))}
-      </div>
+      <Grid currentGrid={currentGrid} setCurrentGrid={setCurrentGrid} />
       <div>
         <button onClick={nextGeneration}>Next State</button>
         <button onClick={togglePlay}>{isPlaying ? "Stop" : "Play"}</button>
